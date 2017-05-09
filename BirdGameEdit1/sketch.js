@@ -184,7 +184,12 @@ function startGame() {
   // - "normal" which is just the when they walk around
   // - "happy" which is a happy dance when they grab one of the collectibles
   // starts in middle of screen, fits in a 50x50 rectangle
-
+  protagonist = createSprite(pX, pY);
+  protagonist.addAnimation("eatWorm", mcEatingWormAnimation);
+  protagonist.addAnimation("walk", mcWalkingAnimation);
+  protagonist.addAnimation("fly", mcFlyingAnimation);
+  protagonist.addAnimation("eatFish", mcEatingFishAnimation);
+  protagonist.addAnimation("stand", mcStandingAnimation);
 
   // CREATE THE COLLECTIBLES!
   worms = new Group();
