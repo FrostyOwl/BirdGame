@@ -386,7 +386,7 @@ function keepSpriteInBounds(sprite) {
   }
 }
 
-function SpritesInBounds() {
+function KeepAllSpritesInBounds() {
   //all sprites bounce at the screen edges
   for (var i = 0; i < fish.length; i++) {
     var s = fish[i];
