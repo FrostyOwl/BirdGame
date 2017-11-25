@@ -145,8 +145,8 @@ function draw() {
     //wrapAllSpritesAround();
 
     // TODO: uncomment if you want the protagonist to follow where the screen is touched!
-    protagonist.position.x = touchX;
-    protagonist.position.y = touchY;
+    //protagonist.position.x = touchX;
+    //protagonist.position.y = touchY;
     
     // draw all of the characters and things.
     drawSprites();
@@ -386,7 +386,7 @@ function keepSpriteInBounds(sprite) {
   }
 }
 
-function keepAllSpritesInBounds() {
+function SpritesInBounds() {
   //all sprites bounce at the screen edges
   for (var i = 0; i < fish.length; i++) {
     var s = fish[i];
