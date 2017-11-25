@@ -6,14 +6,18 @@
 // and the things the protagonist needs to collect
 var protagonist, fish, worms, predator;
 
+
 var gameScreen = "start"; // could also be, "play", "win", "lose"
 
 // TODO: set appropriately for your game!
 var numberOfEnemies = 1;
-var numberOfFish = 10;
-var numberOfWorms = 20
+var numberOfFish = 5;
+var numberOfWorms = 10;
 
 var textColor;
+
+var victorySong;
+var gameOverSong;
 
 // animations declared in the global scope so they can be used in
 // preload & recycled again in start game
@@ -27,6 +31,8 @@ var mcEatingFishAnimation;
 var mcStandingAnimation;
 
 var bgImg;
+var victorybgImage;
+var gameOverbgImage;
 
 function preload() {
 
@@ -51,6 +57,11 @@ function preload() {
   wormAnimation.frameDelay = 15;
   fishAnimation = loadAnimation("assets/Fish_0.png", "assets/Fish_1.png");
   fishAnimation.frameDelay = 15;
+  
+  victorybgImage = loadAnimation("assets/WinScreen_0.png", "assets/WinScreen_1.png");
+  victorybgImage.frameDelay = 15;
+  gameOverbgImage = loadAnimation("assets/GameOver_1.png", "assets/GameOver_2.png", "assets/GameOver_3.png", "assets/GameOver_4.png", "assets/GameOver_5.png", "assets/GameOver_6.png");
+  gameOverbgImage.frameDelay = 15;
 
   // make a background image 2-3x the size of these
   // remember: the retina display has a higher density!
@@ -58,6 +69,10 @@ function preload() {
   // 412 x 604 (android)
   // 375 x 559 (iOS)
   bgImg = loadImage("assets/Background.png");
+  
+  
+  victorySong = loadSound("assets/BeepBox-Win.wav");
+  gameOverSong = loadSound("assets/BeepBox-Game Over.wav")
 }
 
 
@@ -130,8 +145,8 @@ function draw() {
     //wrapAllSpritesAround();
 
     // TODO: uncomment if you want the protagonist to follow where the screen is touched!
-    //protagonist.position.x = touchX;
-    //protagonist.position.y = touchY;
+    protagonist.position.x = touchX;
+    protagonist.position.y = touchY;
     
     // draw all of the characters and things.
     drawSprites();
@@ -139,7 +154,7 @@ function draw() {
   } else if (gameScreen === "win") {
 
     drawSprites();
-
+    
     fill(textColor);
     text("You Survived!\nTap anywhere to play again.", width / 2, height / 2);
 
@@ -152,7 +167,7 @@ function draw() {
     fill(textColor);
     text("You Were Food! \nTap anywhere to play again.", width / 2, height / 2);
 
-    //DOplay Predator animation
+    //DO play Predator animation
 
   }
 }
@@ -191,6 +206,7 @@ function startGame() {
   protagonist.addAnimation("eatFish", mcEatingFishAnimation);
   protagonist.addAnimation("stand", mcStandingAnimation);
 
+
   // CREATE THE COLLECTIBLES!
   worms = new Group();
   for (i = 0; i < numberOfWorms; i++) {
@@ -202,8 +218,9 @@ function startGame() {
     dot.addAnimation("normal", wormAnimation);
     // TODO: control the movement of collectibles here!
     dot.setVelocity(0, 0);
-
+    
     worms.add(dot);
+    //wormAnimation.frameDelay = random(10,20);
   }
 
   fish = new Group();
@@ -215,9 +232,15 @@ function startGame() {
     // TODO: set your images here!
     dot.addAnimation("normal", fishAnimation);
     // TODO: control the movement of collectibles here!
+ 
     dot.setVelocity(random(-2, 2), 0);
+    
 
     fish.add(dot);
+    
+    //if (-2 <= velocity < 0){
+      //fishAnimation.mirrorY(dir);
+    //}
   }
 
   // CREATE THE ENEMIES!
@@ -242,7 +265,7 @@ function startGame() {
     // TODO: set your images here!
     baddie.addAnimation("normal", predatorAnimation);
     // TODO: control the movement of enemies here!
-    baddie.setVelocity(random(5, 5), random(-5, 5));
+    baddie.setVelocity(random(-5, 5), random(-5, 5));
 
     predator.add(baddie);
   }
@@ -282,10 +305,15 @@ function winGame() {
   // sprite celebration
   // DO make protagonist centered
   // DO white 
-  protagonist.changeAnimation("mcWalking");
+  protagonist.changeAnimation("stand");
 
   if (gameScreen != "win") {
     // TODO: play a sound!
+    victorySong.play();
+    
+    protagonist.addAnimation("victory", victorybgImage);
+    victory;
+    
   }
 
   gameScreen = "win";
@@ -301,6 +329,7 @@ function loseGame(character, baddie) {
 
   if (gameScreen != "lose") {
     // TODO: play a sound!
+    gameOverSong.play();
   }
 
   gameScreen = "lose";
